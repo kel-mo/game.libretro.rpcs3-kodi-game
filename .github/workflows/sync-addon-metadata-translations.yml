@@ -1,0 +1,51 @@
+name: Sync addon metadata translations
+
+on:
+  push:
+    branches: [ master, Matrix, Nexus, Omega, Piers ]
+    paths:
+      - '**addon.xml.in'
+      - '**resource.language.**strings.po'
+
+jobs:
+  default:
+    if: github.repository == 'kodi-game/game.libretro.rpcs3'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          path: project
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install git+https://github.com/xbmc/sync_addon_metadata_translations.git
+
+      - name: Run sync-addon-metadata-translations
+        run: |
+          sync-addon-metadata-translations
+        working-directory: ./project
+
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Sync of addon metadata translations" -a
+        working-directory: ./project
+        continue-on-error: true
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v1.3.0
+        with:
+          branch: ${{ github.ref }}
+          directory: ./project

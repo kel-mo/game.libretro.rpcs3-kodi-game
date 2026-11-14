@@ -1,0 +1,1 @@
+rpcs3 https://github.com/WizzardSK/rpcs3-libretro libretro
