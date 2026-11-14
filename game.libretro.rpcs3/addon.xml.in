@@ -20,5 +20,6 @@
 		<license>GPLv2</license>
 		<platform>@PLATFORM@</platform>
 		<source>https://github.com/kodi-game/game.libretro.rpcs3</source>
+		<summary lang="en_GB">Sony - PlayStation 3 (RPCS3)</summary>
 	</extension>
 </addon>
